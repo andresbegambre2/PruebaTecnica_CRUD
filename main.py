@@ -1,10 +1,12 @@
-from crud import crear_producto, listar_productos
+from crud import crear_producto, listar_productos, eliminar_producto
 
 while True:
     print("\nCRUD DE PRODUCTOS")
     print("1. Crear producto")
     print("2. Listar productos")
-    print("3. Salir")
+    print("3. Actualizar producto")
+    print("4. Eliminar producto")
+    print("5. Salir")
 
     opcion = input("Seleccione una opción: ")
 

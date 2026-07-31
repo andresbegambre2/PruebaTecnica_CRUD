@@ -119,3 +119,26 @@ def actualizar_producto():
 
     cursor.close()
     conexion.close()    
+
+def eliminar_producto():
+    conexion = conectar()
+    cursor = conexion.cursor()
+
+    id_producto = int(input("Ingrese el ID del producto a eliminar: "))
+
+    cursor.execute("SELECT * FROM productos WHERE id = %s", (id_producto,))
+    producto = cursor.fetchone()
+
+    if producto is None:
+        print("El producto no existe.")
+        cursor.close()
+        conexion.close()
+        return
+
+    cursor.execute("DELETE FROM productos WHERE id = %s", (id_producto,))
+    conexion.commit()
+
+    print("Producto eliminado correctamente.")
+
+    cursor.close()
+    conexion.close()
