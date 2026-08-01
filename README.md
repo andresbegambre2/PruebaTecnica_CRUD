@@ -100,6 +100,55 @@ CRUD_PRODUCTOS
 
 `main.py`: archivo utilizado para ejecutar el programa en consola.
 
+## Contratiempos durante el desarrollo
+
+Tuve algunas fallas con el equipo mientras trabajaba en esto y se me fue el tiempo, así que no alcancé a pulir todo como quería. Sin embargo, sí logré resolver el error inicial donde el sistema no reconocía el ID del producto al momento de actualizar o eliminar. 
+
+El problema era que el campo de ID estaba configurado en modo solo lectura, y por eso, aunque seleccionara un producto en la tabla, el ID no se guardaba correctamente. Esto hacía que al presionar "Actualizar" o "Eliminar" saliera el mensaje de que faltaba seleccionar un producto, aunque sí lo había seleccionado.
+
+La solución fue habilitar momentáneamente el campo antes de insertar el valor, y luego volver a bloquearlo:
+
+En `interfaz.py`Reemplazar las funciones por
+
+```python
+
+def seleccionar_fila(event):
+    seleccionado = tabla.focus()
+    if not seleccionado:
+        return
+    valores = tabla.item(seleccionado, "values")
+
+    limpiar_campos()
+
+    entry_id.config(state="normal")      
+    entry_id.insert(0, valores[0])
+    entry_id.config(state="readonly")    
+
+    entry_nombre.insert(0, valores[1])
+    entry_precio.insert(0, valores[2])
+    entry_stock.insert(0, valores[3])
+    entry_categoria.insert(0, valores[4])
+```
+
+Y lo mismo apliqué en la función que limpia los campos, para que no fallara al intentar borrar el ID:
+
+```python
+def limpiar_campos():
+    entry_id.config(state="normal")
+    entry_id.delete(0, tk.END)
+    entry_id.config(state="readonly")
+
+    entry_nombre.delete(0, tk.END)
+    entry_precio.delete(0, tk.END)
+    entry_stock.delete(0, tk.END)
+    entry_categoria.delete(0, tk.END)
+```
+
+Con estos ajustes, ya el programa reconoce bien el ID seleccionado y las funciones de actualizar y eliminar funcionan correctamente.
+Por no alterar el horario de subida del proyecto ya funcional, no subo el código con este cambio aplicado; queda documentado aquí en el README para integrarlo en la próxima actualización.
+
+
+
 ## Ejecución
 
 Instalar la dependencia necesaria:
